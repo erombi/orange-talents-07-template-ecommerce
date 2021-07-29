@@ -20,6 +20,7 @@ public class Usuario {
 
     @Email
     @NotBlank
+    @Column(unique = true)
     private String login;
 
     @Length(min = 6)

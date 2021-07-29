@@ -1,5 +1,6 @@
 package br.com.zupacademy.eduardo.mercadolivre.controller.request;
 
+import br.com.zupacademy.eduardo.mercadolivre.controller.request.annotation.UniqueValue;
 import br.com.zupacademy.eduardo.mercadolivre.model.Password;
 import br.com.zupacademy.eduardo.mercadolivre.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 
 public class UsuarioRequest {
 
+    @UniqueValue(clazz = Usuario.class, field = "login")
     @Email
     @NotBlank
     private String login;
