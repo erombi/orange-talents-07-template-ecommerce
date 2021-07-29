@@ -14,7 +14,7 @@ public class Password {
     private final String password;
 
     public Password(@NotBlank String password) {
-        Assert.state(!password.isBlank(), "Login não pode ser nulo ou vazio !");
+        Assert.state(password != null, "Password não pode ser nulo !");
         Assert.state(!password.isBlank(), "Password não pode ser nulo ou vazio !");
         Assert.state(password.length() >= 6, "Password precisa ter no mínimo 6 caracteres !");
 

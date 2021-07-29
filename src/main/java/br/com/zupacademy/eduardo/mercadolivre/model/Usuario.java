@@ -1,6 +1,5 @@
 package br.com.zupacademy.eduardo.mercadolivre.model;
 
-import br.com.zupacademy.eduardo.mercadolivre.infra.PasswordEncoder;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
 
