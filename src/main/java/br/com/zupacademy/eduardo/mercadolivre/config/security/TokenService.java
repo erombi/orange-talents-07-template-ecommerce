@@ -4,9 +4,12 @@ import br.com.zupacademy.eduardo.mercadolivre.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 
@@ -18,6 +21,23 @@ public class TokenService {
 
     @Value("${mercadolivre.jwt.secret}")
     private String secret;
+
+    @Autowired
+    private Environment environment;
+
+    public TokenService() { }
+
+    /*
+    * Somente em ambiente de teste
+    * */
+    public TokenService(String expiration, String secret) {
+        if (environment != null) {
+            Assert.state(environment.getActiveProfiles()[0].equals("test"), "Esse construtor deve ser usado SOMENTE em ambiente de test");
+        }
+
+        this.expiration = expiration;
+        this.secret = secret;
+    }
 
     public String gerarToken(Authentication authentication) {
         Usuario logado = (Usuario) authentication.getPrincipal();

@@ -37,6 +37,15 @@ public class Usuario implements UserDetails {
     @Deprecated
     public Usuario() {    }
 
+    /**
+     * @apiNote Contrutor somente para uso de BuilderUsuario
+     */
+    public Usuario(Long id, String login, String senha) {
+        this.id = id;
+        this.login = login;
+        this.senha = senha;
+    }
+
     public Usuario(@Email @NotBlank String login, @NotNull Password password) {
         Assert.state(!login.isBlank(), "Login não pode ser nulo ou vazio !");
         Assert.state(!password.get().isBlank(), "Password não pode ser nulo ou vazio !");
