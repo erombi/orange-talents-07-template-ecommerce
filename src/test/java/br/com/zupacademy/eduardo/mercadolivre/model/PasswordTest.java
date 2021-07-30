@@ -1,6 +1,5 @@
 package br.com.zupacademy.eduardo.mercadolivre.model;
 
-import br.com.zupacademy.eduardo.mercadolivre.infra.PasswordEncoder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,17 +41,12 @@ public class PasswordTest {
     @Test
     @DisplayName("Deve Criar um Password corretamente com 6 caracteres")
     public void test5() {
-        String encoded = "";
-        try {
-            encoded = PasswordEncoder.encode("123456");
-        } catch (Exception e) {
-            System.out.println("Erro no encode");
-        }
-
         Password password = new Password("123456");
+        String encoded = password.get();
+        boolean valid = password.getEncoder().matches("123456", encoded);
 
         Assertions.assertNotNull(password);
-        Assertions.assertEquals(encoded.length(), password.get().length());
-        Assertions.assertEquals(encoded, password.get());
+        Assertions.assertTrue(valid);
+
     }
 }
