@@ -55,7 +55,8 @@ public class Produto {
     public Produto() { }
 
     public Produto(@NotBlank String nome, @NotNull @PositiveOrZero BigDecimal valor, @NotNull @PositiveOrZero Long quantidadeDisponivel,
-                   @NotBlank String descricao, @NotNull Categoria categoria, @NotNull Usuario usuario, @NotNull @Size(min = 3) Set<CaracteristicaRequest> caracteristicas) {
+                       @NotBlank String descricao, @NotNull Categoria categoria, @NotNull Usuario usuario,
+                       @NotNull @Size(min = 3) Set<CaracteristicaRequest> caracteristicas) {
         this.nome = nome;
         this.valor = valor;
         this.quantidadeDisponivel = quantidadeDisponivel;
@@ -63,10 +64,6 @@ public class Produto {
         this.categoria = categoria;
         this.usuario = usuario;
         this.caracteristicas = caracteristicas.stream().map(c -> c.toModel(this)).collect(Collectors.toSet());
-    }
-
-    public Set<Caracteristica> getCaracteristicas() {
-        return Collections.unmodifiableSet(caracteristicas);
     }
 
     @Override
