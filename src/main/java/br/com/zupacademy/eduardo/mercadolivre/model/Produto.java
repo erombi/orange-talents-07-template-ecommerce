@@ -51,6 +51,9 @@ public class Produto {
 
     private Instant dataCadastro = Instant.now();
 
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemProduto> imagens = new HashSet<>();
+
     @Deprecated
     public Produto() { }
 
@@ -66,6 +69,10 @@ public class Produto {
         this.caracteristicas = caracteristicas.stream().map(c -> c.toModel(this)).collect(Collectors.toSet());
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,5 +84,14 @@ public class Produto {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void associaImagens(Set<String> links) {
+        Set<ImagemProduto> imagemProdutoSet = links.stream().map(link -> new ImagemProduto(this, link)).collect(Collectors.toSet());
+        this.imagens.addAll(imagemProdutoSet);
+    }
+
+    public boolean pertenceAoDono(Usuario usuario) {
+        return this.usuario.equals(usuario);
     }
 }
