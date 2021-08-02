@@ -2,10 +2,12 @@ package br.com.zupacademy.eduardo.mercadolivre.controller;
 
 import br.com.zupacademy.eduardo.mercadolivre.component.UploaderFake;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.ImagemRequest;
+import br.com.zupacademy.eduardo.mercadolivre.controller.request.OpniaoRequest;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.ProdutoRequest;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.annotation.ExistsId;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.validator.QuantidadeMinimaCaracteristicasValidator;
 import br.com.zupacademy.eduardo.mercadolivre.infra.ExecuteTransaction;
+import br.com.zupacademy.eduardo.mercadolivre.model.Opniao;
 import br.com.zupacademy.eduardo.mercadolivre.model.Produto;
 import br.com.zupacademy.eduardo.mercadolivre.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,6 @@ public class ProdutoController {
         Produto produto = manager.find(Produto.class, id);
 
         if (produto == null) return ResponseEntity.notFound().build();
-
         if (!produto.pertenceAoDono(usuario)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Set<String> links = uploaderFake.upload(request.getFiles());
@@ -63,6 +64,22 @@ public class ProdutoController {
 
         executor.inTransaction(() -> {
             manager.merge(produto);
+        });
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/opnioes")
+    public ResponseEntity<?> insertOpniao(@PathVariable Long id, @RequestBody @Valid OpniaoRequest request, @AuthenticationPrincipal Usuario usuario) {
+        Produto produto = manager.find(Produto.class, id);
+
+        if (produto == null) return ResponseEntity.notFound().build();
+        if (!produto.pertenceAoDono(usuario)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        Opniao opniao = request.toModel(produto, usuario);
+
+        executor.inTransaction(() -> {
+            manager.persist(opniao);
         });
 
         return ResponseEntity.ok().build();
