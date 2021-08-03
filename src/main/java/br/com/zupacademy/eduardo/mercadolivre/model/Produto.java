@@ -73,6 +73,12 @@ public class Produto {
         return usuario;
     }
 
+    public String getVendedor() { return "Jeovaldo"; }
+
+    public String getNome() {
+        return nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
