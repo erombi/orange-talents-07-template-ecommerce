@@ -50,4 +50,12 @@ public class Categoria {
     public Categoria getCategoriaMae() {
         return categoriaMae;
     }
+
+    public String montaStringCategorias() {
+        if (this.categoriaMae != null) {
+           return this.getCategoriaMae().montaStringCategorias() + " -> " + this.nome;
+        }
+
+        return this.nome;
+    }
 }

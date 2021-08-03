@@ -46,6 +46,22 @@ public class Opniao {
         this.produto = produto;
     }
 
+    public Integer getNota() {
+        return this.nota;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

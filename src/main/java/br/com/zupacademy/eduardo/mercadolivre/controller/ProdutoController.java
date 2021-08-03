@@ -8,6 +8,7 @@ import br.com.zupacademy.eduardo.mercadolivre.controller.request.PerguntaRequest
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.ProdutoRequest;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.annotation.ExistsId;
 import br.com.zupacademy.eduardo.mercadolivre.controller.request.validator.QuantidadeMinimaCaracteristicasValidator;
+import br.com.zupacademy.eduardo.mercadolivre.controller.response.DetalheProdutoResponse;
 import br.com.zupacademy.eduardo.mercadolivre.controller.response.PerguntaResponse;
 import br.com.zupacademy.eduardo.mercadolivre.infra.ExecuteTransaction;
 import br.com.zupacademy.eduardo.mercadolivre.model.Opniao;
@@ -56,6 +57,15 @@ public class ProdutoController {
         });
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DetalheProdutoResponse> detalhar(@PathVariable Long id) {
+        Produto produto = manager.find(Produto.class, id);
+
+        if (produto == null) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(new DetalheProdutoResponse(produto));
     }
 
     @PostMapping("/{id}/imagens")

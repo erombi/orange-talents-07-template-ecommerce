@@ -8,10 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -54,6 +51,12 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<ImagemProduto> imagens = new HashSet<>();
 
+    @OneToMany(mappedBy = "produto")
+    private Set<Opniao> opnioes = new HashSet<>();
+
+    @OneToMany(mappedBy = "produto")
+    private Set<Pergunta> perguntas = new HashSet<>();
+
     @Deprecated
     public Produto() { }
 
@@ -75,8 +78,40 @@ public class Produto {
 
     public String getVendedor() { return "Jeovaldo"; }
 
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public Long getQuantidadeDisponivel() {
+        return quantidadeDisponivel;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Set<Caracteristica> getCaracteristicas() {
+        return Collections.unmodifiableSet(caracteristicas);
+    }
+
+    public Set<ImagemProduto> getImagens() {
+        return Collections.unmodifiableSet(imagens);
+    }
+
+    public String montaStringCategorias() {
+        return categoria.montaStringCategorias();
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public Set<Opniao> getOpnioes() {
+        return opnioes;
+    }
+
+    public Set<Pergunta> getPerguntas() {
+        return perguntas;
     }
 
     @Override
@@ -99,5 +134,15 @@ public class Produto {
 
     public boolean pertenceAoDono(Usuario usuario) {
         return this.usuario.equals(usuario);
+    }
+
+    public Double calculaOpniaoMedia() {
+        OptionalDouble average = opnioes.stream().map(Opniao::getNota).mapToDouble(Integer::doubleValue).average();
+
+        if (average.isPresent()) {
+            return average.getAsDouble();
+        }
+
+        return 0.0;
     }
 }
