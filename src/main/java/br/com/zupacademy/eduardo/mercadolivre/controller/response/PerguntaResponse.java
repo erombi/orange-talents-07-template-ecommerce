@@ -13,7 +13,7 @@ public class PerguntaResponse {
 
     public PerguntaResponse(Pergunta pergunta) {
         this.titulo = pergunta.getTitulo();
-        this.produto = pergunta.getProduto().getNome();
+        this.produto = pergunta.getNomeProduto();
         this.criadoEm = pergunta.getCriadoEm();
     }
 

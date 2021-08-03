@@ -44,8 +44,12 @@ public class Pergunta {
         return criadoEm;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Usuario getVendedor() {
+        return this.produto.getUsuario();
+    }
+
+    public String getNomeProduto() {
+        return this.produto.getNome();
     }
 
     @Override
