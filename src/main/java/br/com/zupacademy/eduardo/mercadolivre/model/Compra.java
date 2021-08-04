@@ -1,10 +1,16 @@
 package br.com.zupacademy.eduardo.mercadolivre.model;
 
+import br.com.zupacademy.eduardo.mercadolivre.controller.request.pagamento.StatusPagamento;
+import org.springframework.util.Assert;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_compra")
@@ -41,6 +47,13 @@ public class Compra {
     @Enumerated(EnumType.STRING)
     private GatewayPagamento gatewayPagamento;
 
+    @OneToMany(mappedBy = "compra")
+    private Set<Pagamento> pagamentos = new HashSet<>();
+
+    @Deprecated
+    public Compra() {
+    }
+
     public Compra(Produto produto, Integer quantidade, Usuario comprador, BigDecimal precoUnitario, GatewayPagamento gatewayPagamento) {
         this.produto = produto;
         this.quantidade = quantidade;
@@ -72,7 +85,28 @@ public class Compra {
         return this.produto.getUsuario();
     }
 
-    public String getUrlRedirecionamento(Long id, String urlConfirmacao) {
-        return this.gatewayPagamento.getUrlRedirecionamento(id, urlConfirmacao);
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public String getUrlRedirecionamento(Long id) {
+        return this.gatewayPagamento.getUrlRedirecionamento(id);
+    }
+
+    public String getUrlConfirmacaoPagamento(Long id) {
+        return this.gatewayPagamento.getUrlConfirmacaoPagamento(id);
+    }
+
+    public void finaliza(Pagamento pagamento) {
+        Assert.state(this.status == StatusCompra.INICIADA, "Somente compras INICIADAS podem ser finalizadas !");
+
+        if (pagamento.getStatus() == StatusPagamento.ERRO)
+            return;
+
+        this.status = StatusCompra.FINALIZADA;
+    }
+
+    public boolean statusValido() {
+        return this.status == StatusCompra.INICIADA;
     }
 }

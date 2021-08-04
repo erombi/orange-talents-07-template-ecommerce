@@ -42,7 +42,7 @@ public class CompraController {
             manager.persist(compra);
             centralEmail.enviaNovaCompra(compra);
 
-            String urlRedirecionamento = compra.getUrlRedirecionamento(compra.getId(), "http://localhost:8080/compras/" + compra.getId() + "/confirmaPagamento");
+            String urlRedirecionamento = compra.getUrlRedirecionamento(compra.getId());
 
             try {
                 URI uri = new URI(urlRedirecionamento);

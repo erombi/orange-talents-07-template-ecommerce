@@ -147,7 +147,7 @@ public class Produto {
     }
 
     public boolean abateEstoque(Integer quantidade) {
-        if (quantidade > this.quantidadeDisponivel) return false;
+        if (quantidade == 0 || quantidade > this.quantidadeDisponivel) return false;
 
         this.quantidadeDisponivel -= quantidade;
         return true;

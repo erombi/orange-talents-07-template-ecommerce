@@ -40,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/console/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/notasfiscais").permitAll()
+                .antMatchers(HttpMethod.POST, "/rankingvendedores").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .headers().frameOptions().sameOrigin()
