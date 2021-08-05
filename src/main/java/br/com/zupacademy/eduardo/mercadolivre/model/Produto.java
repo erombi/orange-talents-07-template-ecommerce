@@ -146,8 +146,8 @@ public class Produto {
         return 0.0;
     }
 
-    public boolean abateEstoque(Integer quantidade) {
-        if (quantidade == 0 || quantidade > this.quantidadeDisponivel) return false;
+    public boolean abateEstoque(Long quantidade) {
+        if (quantidade <= 0 || quantidade > this.quantidadeDisponivel) return false;
 
         this.quantidadeDisponivel -= quantidade;
         return true;

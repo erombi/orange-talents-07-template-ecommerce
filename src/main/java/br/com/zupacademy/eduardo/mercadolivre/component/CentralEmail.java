@@ -28,6 +28,6 @@ public class CentralEmail {
     public void enviaErroPagamento(Compra compra) {
         Usuario vendedor = compra.getComprador();
         System.out.println("Olá " + vendedor.getUsername() + ", ocorreu um erro no pagamento da compra " + compra.getId() + ", por favor tente novamente !\n" +
-                "Link: " + compra.getUrlRedirecionamento(compra.getId()));
+                "Link: " + compra.getUrlRedirecionamento());
     }
 }

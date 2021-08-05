@@ -7,14 +7,11 @@ import br.com.zupacademy.eduardo.mercadolivre.controller.request.PagamentoPaypal
 import br.com.zupacademy.eduardo.mercadolivre.infra.ExecuteTransaction;
 import br.com.zupacademy.eduardo.mercadolivre.model.Compra;
 import br.com.zupacademy.eduardo.mercadolivre.model.Pagamento;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,17 +19,17 @@ import java.util.Map;
 @RequestMapping("/compras")
 public class PagamentoController {
 
-    @PersistenceContext
     private EntityManager manager;
-
-    @Autowired
     private ExecuteTransaction executor;
-
-    @Autowired
     private AcaoAposPagamentoClient client;
-
-    @Autowired
     private CentralEmail centralEmail;
+
+    public PagamentoController(EntityManager manager, ExecuteTransaction executor, AcaoAposPagamentoClient client, CentralEmail centralEmail) {
+        this.manager = manager;
+        this.executor = executor;
+        this.client = client;
+        this.centralEmail = centralEmail;
+    }
 
     @PostMapping("/{id}/pagamentos/paypal")
     public ResponseEntity<?> pagamentoPaypal(@RequestBody @Valid PagamentoPaypalRequest request, @PathVariable Long id) {
@@ -40,6 +37,7 @@ public class PagamentoController {
 
         if (!compra.statusValido()) return ResponseEntity
                 .unprocessableEntity().body(getMap("status", "Somente compras com status INICIADO podem ser pagos !"));
+
         Pagamento pagamento = request.toModel(compra);
 
         executor.inTransaction(() -> {
@@ -57,6 +55,7 @@ public class PagamentoController {
 
         if (!compra.statusValido()) return ResponseEntity
                 .unprocessableEntity().body(getMap("status", "Somente compras com status INICIADO podem ser pagos !"));
+
         Pagamento pagamento = request.toModel(compra);
 
         executor.inTransaction(() -> {

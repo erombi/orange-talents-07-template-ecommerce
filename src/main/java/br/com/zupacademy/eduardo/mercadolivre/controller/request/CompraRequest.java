@@ -22,10 +22,10 @@ public class CompraRequest {
 
     @NotNull
     @Positive
-    private Integer quantidade;
+    private Long quantidade;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public CompraRequest(GatewayPagamento gatewayPagamento, Long idProduto, Integer quantidade) {
+    public CompraRequest(GatewayPagamento gatewayPagamento, Long idProduto, Long quantidade) {
         this.gatewayPagamento = gatewayPagamento;
         this.idProduto = idProduto;
         this.quantidade = quantidade;
@@ -39,7 +39,7 @@ public class CompraRequest {
         return this.idProduto;
     }
 
-    public Integer getQuantidade() {
+    public Long getQuantidade() {
         return this.quantidade;
     }
 

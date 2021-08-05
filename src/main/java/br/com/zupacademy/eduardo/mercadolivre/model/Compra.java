@@ -26,7 +26,7 @@ public class Compra {
 
     @NotNull
     @Positive
-    private Integer quantidade;
+    private Long quantidade;
 
     @NotNull
     @ManyToOne
@@ -54,7 +54,7 @@ public class Compra {
     public Compra() {
     }
 
-    public Compra(Produto produto, Integer quantidade, Usuario comprador, BigDecimal precoUnitario, GatewayPagamento gatewayPagamento) {
+    public Compra(Produto produto, Long quantidade, Usuario comprador, BigDecimal precoUnitario, GatewayPagamento gatewayPagamento) {
         this.produto = produto;
         this.quantidade = quantidade;
         this.comprador = comprador;
@@ -89,8 +89,8 @@ public class Compra {
         return comprador;
     }
 
-    public String getUrlRedirecionamento(Long id) {
-        return this.gatewayPagamento.getUrlRedirecionamento(id);
+    public String getUrlRedirecionamento() {
+        return this.gatewayPagamento.getUrlRedirecionamento(this.id);
     }
 
     public String getUrlConfirmacaoPagamento(Long id) {

@@ -24,16 +24,17 @@ import java.net.URISyntaxException;
 @RequestMapping("/compras")
 public class CompraController {
 
-    @PersistenceContext
     private EntityManager manager;
-
-    @Autowired
     private CentralEmail centralEmail;
+
+    public CompraController(EntityManager manager, CentralEmail centralEmail) {
+        this.manager = manager;
+        this.centralEmail = centralEmail;
+    }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> novaCompra(@RequestBody @Valid CompraRequest request, @AuthenticationPrincipal Usuario usuario,
-                                        UriComponentsBuilder builder) {
+    public ResponseEntity<?> novaCompra(@RequestBody @Valid CompraRequest request, @AuthenticationPrincipal Usuario usuario) {
         Produto produto = manager.find(Produto.class, request.getIdProduto());
         boolean abatido = produto.abateEstoque(request.getQuantidade());
 
@@ -42,7 +43,7 @@ public class CompraController {
             manager.persist(compra);
             centralEmail.enviaNovaCompra(compra);
 
-            String urlRedirecionamento = compra.getUrlRedirecionamento(compra.getId());
+            String urlRedirecionamento = compra.getUrlRedirecionamento();
 
             try {
                 URI uri = new URI(urlRedirecionamento);
